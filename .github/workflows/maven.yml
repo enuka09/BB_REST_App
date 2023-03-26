@@ -15,7 +15,10 @@ on:
     branches: [ "master" ]
 
 jobs:
+
   build:
+
+    permissions: write-all
 
     runs-on: ubuntu-latest
 
