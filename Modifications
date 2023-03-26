@@ -1,0 +1,10 @@
+Id   |  Date        |  Remark
+-----|--------------|---------------------------------------------------------------------------------------------------------------------------------------------------
+001  |  21/03/2023  |  Created the Initial Project
+002  |  21/03/2023  |  Add the project to the Git Repositories
+
+003  |  22/03/2023  |  Creates DBConnector to sets up a connection to a MySQL database
+004  |  22/03/2023  |  Creates DBHelper to retrieves customer information from the database using DBConnector
+
+005  |  23/03/2023  |  Defines a Customer object with fields for ID, first name, last name, and date of birth
+006  |  23/03/2023  |  Creates a RESTful web service endpoint to retrieve customer information in JSON format using CustomerResource class
