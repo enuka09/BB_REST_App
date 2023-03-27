@@ -1,14 +1,7 @@
 package com.example.bb_rest_app;
 
 import com.google.gson.Gson;
-import jakarta.ws.rs.core.Response;
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
-
-import java.sql.Date;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

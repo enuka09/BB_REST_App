@@ -10,3 +10,4 @@ Id   |  Date        |  Remark
 006  |  23/03/2023  |  Creates a RESTful web service endpoint to retrieve customer information in JSON format using CustomerResource class
 
 006  |  27/03/2023  |  Modified the DBHelper and Customer Classes to retrieve all the data in the database and display it in JSON format
+007  |  27/03/2023  |  Creates "insertUser" method in DBHelper class to create new user from backend
