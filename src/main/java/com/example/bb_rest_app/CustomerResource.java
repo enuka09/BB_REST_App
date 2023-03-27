@@ -3,18 +3,19 @@ package com.example.bb_rest_app;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import jakarta.enterprise.context.RequestScoped;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 @Path("/customer")
 @RequestScoped
 public class CustomerResource {
 
-    public CustomerResource() {
+   public CustomerResource() {
 
     }
 
@@ -28,4 +29,9 @@ public class CustomerResource {
             throw new RuntimeException(e);
         }
     }
-}
+    }
+
+
+
+
+

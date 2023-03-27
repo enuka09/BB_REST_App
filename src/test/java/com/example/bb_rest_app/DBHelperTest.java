@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DBHelperTest {
 
-    @Test
+   @Test
     void getCustomers() throws SQLException {
         List<Customer> customers = DBHelper.getCustomers();
 
@@ -21,7 +21,7 @@ class DBHelperTest {
             assertNotNull(customer.getId());
             assertNotNull(customer.getFirstName());
             assertNotNull(customer.getLastName());
-            assertNotNull(customer.getDateOfBirth());
+            assertNotNull(customer.getDOB());
         }
     }
 }

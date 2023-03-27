@@ -8,3 +8,5 @@ Id   |  Date        |  Remark
 
 005  |  23/03/2023  |  Defines a Customer object with fields for ID, first name, last name, and date of birth
 006  |  23/03/2023  |  Creates a RESTful web service endpoint to retrieve customer information in JSON format using CustomerResource class
+
+006  |  27/03/2023  |  Modified the DBHelper and Customer Classes to retrieve all the data in the database and display it in JSON format
