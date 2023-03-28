@@ -11,3 +11,5 @@ Id   |  Date        |  Remark
 
 006  |  27/03/2023  |  Modified the DBHelper and Customer Classes to retrieve all the data in the database and display it in JSON format
 007  |  27/03/2023  |  Creates "insertUser" method in DBHelper class to create new user from backend
+
+008  |  28/03/2023  |  Modify the Customer Object and created POST method in the resource file to insert data to the database through the API

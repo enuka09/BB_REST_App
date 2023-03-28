@@ -1,9 +1,10 @@
 package com.example.bb_rest_app;
 
-import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Customer {
-
     private int id;
     private String firstName;
     private String lastName;
@@ -27,6 +28,10 @@ public class Customer {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dob = dob;
+    }
+
+    public Customer() {
+
     }
 
     public int getId() {
@@ -77,12 +82,14 @@ public class Customer {
         this.nic = nic;
     }
 
-    public Date getDOB() {
-        return dob;
+    public String getDOB() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(dob);
     }
 
-    public void setDOB(Date dob) {
-        this.dob = dob;
+    public void setDOB(String dob) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        this.dob = sdf.parse(dob);
     }
 
 }
