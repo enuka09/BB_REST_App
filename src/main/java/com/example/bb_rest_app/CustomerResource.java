@@ -19,54 +19,37 @@ public class CustomerResource {
 
 
     public static void main(String[] args) throws ParseException {
+
+        /* Insert Customer */
 //        CustomerResource customerResource = new CustomerResource();
 //        Customer newCustomer = new Customer();
 //
+//        newCustomer.setFirstName("Namal");
+//        newCustomer.setLastName("Perera");
+//        newCustomer.setUsername("namal@gmail.com");
+//        newCustomer.setPassword("Namal_@1990");
+//        newCustomer.setNIC("19901830040");
 //
-//        newCustomer.setFirstName("John");
-//        newCustomer.setLastName("Doe");
-//        newCustomer.setUsername("johndoe");
-//        newCustomer.setPassword("password123");
-//        newCustomer.setNIC("1234567890");
-//        newCustomer.setDOB("1990-01-01");
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        java.util.Date utilDate = dateFormat.parse("1990-10-21");
+//        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+//        newCustomer.setDOB(sqlDate);
 //
 //        String response = customerResource.createCustomer(newCustomer);
 //        System.out.println(response);
-}
-
-//    public CustomerResource() {
-//    }
-//
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public String getCustomers() {
-//        Gson gson = new GsonBuilder().create();
-//        try {
-//            return gson.toJson(DBHelper.getCustomers());
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+    }
 
 
-//    @POST
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    public String createCustomer(Customer customer) {
-//        Gson gson = new GsonBuilder().create();
-//        customer = gson.fromJson(gson.toJson(customer), Customer.class);
-//        try {
-//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//            Date dob = new Date(sdf.parse(customer.getDOB()).getTime());
-//            DBHelper.insertUser(customer.getFirstName(), customer.getLastName(), customer.getUsername(),
-//                    customer.getPassword(), customer.getNIC(), dob);
-//            String message = "Customer created successfully";
-//            return "inserted";
-//        } catch (SQLException | ParseException e) {
-//            String errorMessage = "Error creating customer: " + e.getMessage();
-//            return "error";
-//        }
-//    }
-
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getCustomers() {
+        Gson gson = new GsonBuilder().create();
+        try {
+            return gson.toJson(DBHelper.getCustomers());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -75,7 +58,7 @@ public class CustomerResource {
         customer = gson.fromJson(gson.toJson(customer), Customer.class);
         try {
             DBHelper.insertUser(customer.getFirstName(), customer.getLastName(), customer.getUsername(),
-                    customer.getPassword(), customer.getNIC(), Date.valueOf(customer.getDOB().toString()));
+                    customer.getPassword(), customer.getNIC(), customer.getDOB());
             String message = "Customer created successfully";
             Response.ResponseBuilder builder = Response.status(Response.Status.CREATED);
             builder.entity(message);
@@ -85,7 +68,7 @@ public class CustomerResource {
         } catch (SQLException e) {
             String errorMessage = "Error creating customer: " + e.getMessage();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorMessage).build();
-           // return "error";
+//            return "error";z
         }
     }
 

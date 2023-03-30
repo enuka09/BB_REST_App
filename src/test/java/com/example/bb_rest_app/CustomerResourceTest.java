@@ -1,7 +1,14 @@
 package com.example.bb_rest_app;
 
-import com.google.gson.Gson;
+import com.google.gson.*;
+import jakarta.ws.rs.core.Response;
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
+
+import java.sql.Date;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -9,15 +16,22 @@ class CustomerResourceTest {
 
     @Test
     public void testGetCustomers() {
-        CustomerResource resource = new CustomerResource();
+        // Create a new instance of the CustomerResource class
+        CustomerResource customerResource = new CustomerResource();
 
-        String customersJson = resource.getCustomers();
+        // Call the getCustomers method and store the result in a String variable
+        String result = customerResource.getCustomers();
 
-        // Assert that the returned JSON string is not null
-        assertNotNull(customersJson);
+        // Check if the result is not null
+        assertNotNull(result);
 
-        // Assert that the returned JSON string can be parsed into an array of customers
-        Customer[] customers = new Gson().fromJson(customersJson, Customer[].class);
-        assertNotNull(customers);
+        // Check if the result is a valid JSON string
+        try {
+            JsonParser parser = new JsonParser();
+            JsonElement jsonElement = parser.parse(result);
+            assertTrue(jsonElement.isJsonArray());
+        } catch (JsonSyntaxException e) {
+            fail("Invalid JSON string returned");
+        }
     }
 }

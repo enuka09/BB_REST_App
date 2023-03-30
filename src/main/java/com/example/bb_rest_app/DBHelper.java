@@ -7,18 +7,31 @@ import java.util.List;
 public class DBHelper {
 
    public static void main(String[] args) throws SQLException {
+/* Login Method */
+//       String username = "namal@gmail.com";
+//       String password = "Namal_@1990";
+//
+//       DBHelper dbHelper = new DBHelper();
+//       if (dbHelper.validateUser(username, password)) {
+//           System.out.println("Login successful");
+//       } else {
+//           System.out.println("Invalid username or password");
+//       }
 
+
+/* Insert Method */
          /* DBHelper dbHelper =new DBHelper();
          dbHelper.getCustomers(); */
 
        //insertUser("test", "test", "test", "test", "2006-08-12", "56295372");
    }
 
+   /* View Customer Details */
     public static List<Customer> getCustomers() throws SQLException {
         List<Customer> customers = new ArrayList<>();
         try (Connection conn = DBConnector.getConnection()) {
 
-            String sql = "SELECT * FROM users";
+            String sql = "SELECT * FROM customers";
             PreparedStatement stmt = conn.prepareStatement(sql);
 
             ResultSet rs = stmt.executeQuery();
@@ -52,36 +65,10 @@ public class DBHelper {
         return customers;
     }
 
-//    public static void insertUser(String firstName, String lastName, String username, String password, String dob, String nic) throws SQLException {
-//        try (Connection conn = DBConnector.getConnection()) {
-//
-//        String sql = "INSERT INTO users (CusFirstName, CusLastName, CusUsername, CusPassword, CusNIC, CusDOB) " +
-//                "VALUES (?, ?, ?, ?, ?, ?)";
-//
-//        try {
-//            PreparedStatement pstmt = conn.prepareStatement(sql);
-//            pstmt.setString(1, firstName);
-//            pstmt.setString(2, lastName);
-//            pstmt.setString(3, username);
-//            pstmt.setString(4, password);
-//            pstmt.setString(5, nic);
-//            pstmt.setString(6, dob);
-//            pstmt.executeUpdate();
-//            System.out.println("New user created successfully");
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//
-//        try {
-//            conn.close();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
+    /* Insert Customers */
     public static void insertUser(String firstName, String lastName, String username, String password, String nic, Date dob) throws SQLException {
         try (Connection conn = DBConnector.getConnection()) {
-            String sql = "INSERT INTO users (CusFirstName, CusLastName, CusUsername, CusPassword, CusNIC, CusDOB) " +
+            String sql = "INSERT INTO customers (CusFirstName, CusLastName, CusUsername, CusPassword, CusNIC, CusDOB) " +
                     "VALUES (?, ?, ?, ?, ?, ?)";
 
             try {
@@ -101,6 +88,31 @@ public class DBHelper {
             e.printStackTrace();
         }
     }
+
+    /* User Login */
+    public static boolean validateUser(String username, String password) {
+        String sql = "SELECT * FROM customers WHERE CusUsername=? AND CusPassword=?";
+
+        try (Connection conn = DBConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                // User exists with the given username and password
+                return true;
+            } else {
+                // No user found with the given username and password
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception as appropriate for your application
+            return false;
+        }
+    }
+
 
 }
 

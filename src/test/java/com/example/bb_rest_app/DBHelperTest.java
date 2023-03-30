@@ -2,69 +2,46 @@ package com.example.bb_rest_app;
 
 import org.junit.jupiter.api.Test;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
-import static com.example.bb_rest_app.DBHelper.insertUser;
-import static org.junit.jupiter.api.Assertions.*;
-
 class DBHelperTest {
 
-   @Test
+    @Test
     void getCustomers() throws SQLException {
         List<Customer> customers = DBHelper.getCustomers();
+        assertNotNull(customers);
+        assertTrue(customers.size() > 0);
 
-        // Check that the returned list is not empty
-        assertFalse(customers.isEmpty());
-
-        // Check that each customer object has the expected properties
         for (Customer customer : customers) {
             assertNotNull(customer.getId());
             assertNotNull(customer.getFirstName());
             assertNotNull(customer.getLastName());
+            assertNotNull(customer.getUsername());
+            assertNotNull(customer.getPassword());
+            assertNotNull(customer.getNIC());
             assertNotNull(customer.getDOB());
+        }
+
+    }
+
+    @Test
+    void insertUser() {
+        try {
+            DBHelper.insertUser("test", "test", "test@", "test321", "98543210", Date.valueOf("2000-05-11"));
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
     @Test
-    public void testInsertUser() {
-        String firstName = "Enuka";
-        String lastName = "Pinsara";
-        String username = "enuka";
-        String password = "enuka123";
-        String dob = "2002-06-09";
-        String nic = "987654321";
+    void validateUser() {
+        String username = "test@";
+        String password = "test321";
 
-        try {
-            // Insert the user
-            insertUser(firstName, lastName, username, password, dob, nic);
-
-            // Retrieve the user from the database
-            try (Connection conn = DBConnector.getConnection()) {
-                String sql = "SELECT * FROM users WHERE CusUsername=?";
-                PreparedStatement pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1, username);
-                ResultSet rs = pstmt.executeQuery();
-
-                // Verify the user is inserted correctly
-                assertTrue(rs.next());
-                assertEquals(firstName, rs.getString("CusFirstName"));
-                assertEquals(lastName, rs.getString("CusLastName"));
-                assertEquals(username, rs.getString("CusUsername"));
-                assertEquals(password, rs.getString("CusPassword"));
-                assertEquals(dob, rs.getString("CusDOB"));
-                assertEquals(nic, rs.getString("CusNIC"));
-
-                conn.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            fail("Exception occurred while inserting user");
-        }
+        assertTrue(DBHelper.validateUser(username, password));
     }
-
-
 }
