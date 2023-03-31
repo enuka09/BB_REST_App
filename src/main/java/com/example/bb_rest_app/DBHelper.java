@@ -6,27 +6,26 @@ import java.util.List;
 
 public class DBHelper {
 
-   public static void main(String[] args) throws SQLException {
-/* Login Method */
-//       String username = "namal@gmail.com";
-//       String password = "Namal_@1990";
+    public static void main(String[] args) throws SQLException {
+          // Insert Method
+//        DBHelper dbHelper =new DBHelper();
+//        dbHelper.getCustomers();
+//        insertUser("test", "test", "test", "test", "2006-08-12", "56295372");
+
+         // Login Method
+//       String username = "enuka@09";
+//       String password = "Enuka_@2002";
 //
 //       DBHelper dbHelper = new DBHelper();
-//       if (dbHelper.validateUser(username, password)) {
+//       if (dbHelper.validateAdmin(username, password)) {
 //           System.out.println("Login successful");
 //       } else {
 //           System.out.println("Invalid username or password");
 //       }
 
+ }
 
-/* Insert Method */
-         /* DBHelper dbHelper =new DBHelper();
-         dbHelper.getCustomers(); */
-
-       //insertUser("test", "test", "test", "test", "2006-08-12", "56295372");
-   }
-
-   /* View Customer Details */
+   // View Customer Details from database
     public static List<Customer> getCustomers() throws SQLException {
         List<Customer> customers = new ArrayList<>();
         try (Connection conn = DBConnector.getConnection()) {
@@ -56,16 +55,15 @@ public class DBHelper {
                 System.out.println("NIC: " + customer.getNIC());
                 System.out.println("Date of Birth: " + customer.getDOB());
                 System.out.println("------------------------");
-
             }
-
             rs.close();
             stmt.close();
         }
         return customers;
     }
 
-    /* Insert Customers */
+
+    // Insert Customers to the database
     public static void insertUser(String firstName, String lastName, String username, String password, String nic, Date dob) throws SQLException {
         try (Connection conn = DBConnector.getConnection()) {
             String sql = "INSERT INTO customers (CusFirstName, CusLastName, CusUsername, CusPassword, CusNIC, CusDOB) " +
@@ -89,7 +87,7 @@ public class DBHelper {
         }
     }
 
-    /* User Login */
+    // Validate Customer Credentials from the database
     public static boolean validateUser(String username, String password) {
         String sql = "SELECT * FROM customers WHERE CusUsername=? AND CusPassword=?";
 
@@ -100,10 +98,10 @@ public class DBHelper {
 
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                // User exists with the given username and password
+                // Customer exists with the given username and password
                 return true;
             } else {
-                // No user found with the given username and password
+                // No customer found with the given username and password
                 return false;
             }
         } catch (SQLException e) {
@@ -114,6 +112,29 @@ public class DBHelper {
     }
 
 
+    // Validate Admin Credentials from the database
+    public static boolean validateAdmin(String username, String password) {
+        String sql = "SELECT * FROM admin WHERE AdminUsername=? AND AdminPassword=?";
+
+        try (Connection conn = DBConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                // Admin exists with the given username and password
+                return true;
+            } else {
+                // No Admin found with the given username and password
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception as appropriate for your application
+            return false;
+        }
+    }
 }
 
 

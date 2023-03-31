@@ -16,3 +16,7 @@ Id   |  Date        |  Remark
 
 009  |  30/03/2023  |  Modify the Customer Object, DBHelper class and 'createCustomer' method in the 'CustomerResource' class to insert Customer data to the database from the frontend.
 010  |  30/03/2023  |  Create the 'validateUser' method in the DBHelper to validate user credentials from the database
+
+011  |  31/03/2023  |  Create new Resource as 'UserLoginResource' and create 'login' method to validate user credentials from database via DBHelper.
+012  |  31/03/2023  |  Create new Object as 'Admin', new method as 'validateAdmin' in DBHelper and a resource as 'AdminLoginResource' to validate admin credentials from database via DBHelper
+012  |  31/03/2023  |  All the classes are tested successfully

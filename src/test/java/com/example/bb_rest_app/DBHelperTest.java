@@ -2,6 +2,7 @@ package com.example.bb_rest_app;
 
 import org.junit.jupiter.api.Test;
 
+import static com.example.bb_rest_app.DBHelper.validateAdmin;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Date;
@@ -43,5 +44,18 @@ class DBHelperTest {
         String password = "test321";
 
         assertTrue(DBHelper.validateUser(username, password));
+    }
+
+    @Test
+    public void testValidAdmin() {
+        assertTrue(validateAdmin("enuka@09", "Enuka_@2002"));
+    }
+    @Test
+    public void testInvalidAdmin() {
+        assertFalse(validateAdmin("invalidAdmin", "wrongPassword"));
+    }
+    @Test
+    public void testEmptyUsernameAndPassword() {
+        assertFalse(validateAdmin("", ""));
     }
 }

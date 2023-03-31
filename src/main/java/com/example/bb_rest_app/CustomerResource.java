@@ -68,7 +68,7 @@ public class CustomerResource {
         } catch (SQLException e) {
             String errorMessage = "Error creating customer: " + e.getMessage();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorMessage).build();
-//            return "error";z
+//            return "error";
         }
     }
 

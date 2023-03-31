@@ -1,15 +1,7 @@
 package com.example.bb_rest_app;
 
 import com.google.gson.*;
-import jakarta.ws.rs.core.Response;
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
-
-import java.sql.Date;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class CustomerResourceTest {
