@@ -20,3 +20,8 @@ Id   |  Date        |  Remark
 011  |  31/03/2023  |  Create new Resource as 'UserLoginResource' and create 'login' method to validate user credentials from database via DBHelper.
 012  |  31/03/2023  |  Create new Object as 'Admin', new method as 'validateAdmin' in DBHelper and a resource as 'AdminLoginResource' to validate admin credentials from database via DBHelper
 012  |  31/03/2023  |  All the classes are tested successfully
+
+013  |  01/04/2023  |  Create new object as "Category"
+014  |  01/04/2023  |  Add new methods as "addCategory" , "getCategory" and "deleteCategory" in DBHelper
+015  |  01/04/2023  |  Create a new Resource as "CategoryResource" and implement @GET, @POST, @DELETE methods
+016  |  01/04/2023  |  Al classes are tested successfully

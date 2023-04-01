@@ -7,21 +7,41 @@ import java.util.List;
 public class DBHelper {
 
     public static void main(String[] args) throws SQLException {
-          // Insert Method
+
+//        View Category
+//        try {
+//            List<Category> categories = getCategory();
+//        } catch (SQLException e) {
+//        }
+
+          //Insert Customers
 //        DBHelper dbHelper =new DBHelper();
 //        dbHelper.getCustomers();
-//        insertUser("test", "test", "test", "test", "2006-08-12", "56295372");
+//        insertUser("test", "test", "test", "test", "123456789", Date.valueOf("2002-09-06"));
 
          // Login Method
 //       String username = "enuka@09";
 //       String password = "Enuka_@2002";
-//
 //       DBHelper dbHelper = new DBHelper();
 //       if (dbHelper.validateAdmin(username, password)) {
 //           System.out.println("Login successful");
 //       } else {
 //           System.out.println("Invalid username or password");
 //       }
+
+//        Insert Category
+//        DBHelper dbHelper = new DBHelper();
+//        dbHelper.addCategory("C005", "Electronics");
+
+
+//        Delete category
+//        Category categoryToDelete = new Category("C009");
+//        try {
+//            DBHelper.deleteCategory(categoryToDelete);
+//            System.out.println("Category deleted successfully");
+//        } catch (SQLException e) {
+//            System.out.println("Error deleting category: " + e.getMessage());
+//        }
 
  }
 
@@ -135,6 +155,61 @@ public class DBHelper {
             return false;
         }
     }
+
+        //Insert Categories into the database
+        public void addCategory(String categoryId, String categoryName) {
+            String sql = "INSERT INTO category (CategoryID, CategoryName) VALUES (?, ?)";
+
+            try (Connection conn = DBConnector.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, categoryId);
+                pstmt.setString(2, categoryName);
+                pstmt.executeUpdate();
+                System.out.println("Category added Successfully!");
+            } catch (SQLException e) {
+                throw new IllegalStateException("Failed to Add Category!", e);
+            }
+        }
+
+
+    //View Category from database
+    public static List<Category> getCategory() throws SQLException {
+        List<Category> categories = new ArrayList<>();
+        try (Connection conn = DBConnector.getConnection()) {
+
+            String sql = "SELECT * FROM category";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String id = rs.getString("CategoryID");
+                String name = rs.getString("CategoryName");
+
+                Category category = new Category(id, name);
+                categories.add(category);
+
+                System.out.println("Category ID: " + category.getId());
+                System.out.println("Category Name: " + category.getName());
+                System.out.println("------------------------");
+            }
+            rs.close();
+            stmt.close();
+        }
+        return categories;
+    }
+
+
+    public static void deleteCategory(Category category) throws SQLException {
+        String id = category.getId();
+        String sql = "DELETE FROM category WHERE CategoryID = ?";
+        try (Connection conn = DBConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, id);
+            stmt.executeUpdate();
+        }
+    }
+
 }
 
 

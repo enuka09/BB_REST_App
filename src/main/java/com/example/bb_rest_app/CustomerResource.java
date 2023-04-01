@@ -12,13 +12,18 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Path("/customer")
 @RequestScoped
 public class CustomerResource {
 
-
     public static void main(String[] args) throws ParseException {
+
+//        CustomerResource customerResource = new CustomerResource();
+//        String customersJson = customerResource.getCustomers();
+//        System.out.println(customersJson);
 
         /* Insert Customer */
 //        CustomerResource customerResource = new CustomerResource();
@@ -37,18 +42,6 @@ public class CustomerResource {
 //
 //        String response = customerResource.createCustomer(newCustomer);
 //        System.out.println(response);
-    }
-
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public String getCustomers() {
-        Gson gson = new GsonBuilder().create();
-        try {
-            return gson.toJson(DBHelper.getCustomers());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @POST
@@ -72,6 +65,17 @@ public class CustomerResource {
         }
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCustomers() {
+        Gson gson = new GsonBuilder().create();
+        try {
+            String json = gson.toJson(DBHelper.getCustomers());
+            return Response.ok(json, MediaType.APPLICATION_JSON).build();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
 
 

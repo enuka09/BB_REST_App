@@ -2,11 +2,11 @@ package com.example.bb_rest_app;
 
 import org.junit.jupiter.api.Test;
 
+import static com.example.bb_rest_app.DBHelper.deleteCategory;
 import static com.example.bb_rest_app.DBHelper.validateAdmin;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.sql.Date;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 class DBHelperTest {
@@ -50,12 +50,72 @@ class DBHelperTest {
     public void testValidAdmin() {
         assertTrue(validateAdmin("enuka@09", "Enuka_@2002"));
     }
+
     @Test
     public void testInvalidAdmin() {
         assertFalse(validateAdmin("invalidAdmin", "wrongPassword"));
     }
+
     @Test
     public void testEmptyUsernameAndPassword() {
         assertFalse(validateAdmin("", ""));
+    }
+
+
+    @Test
+    public void testAddCategory() throws SQLException {
+        DBHelper dbHelper = new DBHelper();
+
+        // Add a new category
+        dbHelper.addCategory("C007", "Food");
+
+        // Verify that the category was added to the database
+        try (Connection conn = DBConnector.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM category WHERE CategoryID = 'C007'")) {
+            assertTrue(rs.next());
+            assertEquals("Food", rs.getString("CategoryName"));
+            assertFalse(rs.next());
+        }
+    }
+
+    @Test
+    public void testGetCategory() throws SQLException {
+        List<Category> categories = DBHelper.getCategory();
+
+        assertNotNull(categories);
+        assertTrue(categories.size() > 0);
+
+        for (Category category : categories) {
+            assertNotNull(category.getId());
+            assertNotNull(category.getName());
+        }
+    }
+
+    @Test
+    public void testDeleteCategory() throws SQLException {
+        // create a mock Category object with a known id
+        Category category = new Category("1", "Test Category");
+
+        // insert the mock Category into the database
+        String insertSql = "INSERT INTO category (CategoryID, CategoryName) VALUES (?, ?)";
+        try (Connection conn = DBConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(insertSql)) {
+            stmt.setString(1, category.getId());
+            stmt.setString(2, category.getName());
+            stmt.executeUpdate();
+        }
+
+        // delete the mock Category from the database using the deleteCategory method
+        deleteCategory(category);
+
+        // verify that the Category has been deleted from the database
+        String selectSql = "SELECT * FROM category WHERE CategoryID = ?";
+        try (Connection conn = DBConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(selectSql)) {
+            stmt.setString(1, category.getId());
+            ResultSet rs = stmt.executeQuery();
+            assertFalse(rs.next()); // assert that there are no rows returned
+        }
     }
 }
