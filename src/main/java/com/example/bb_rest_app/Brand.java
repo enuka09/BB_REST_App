@@ -13,6 +13,10 @@ public class Brand {
 
     }
 
+    public Brand(String id) {
+        this.id = id;
+    }
+
     public String getId() {
         return id;
     }

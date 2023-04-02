@@ -62,19 +62,6 @@ public class CategoryResource {
         }
     }
 
-//    @PUT
-//    @Path("/update/{id}")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response updateCategory(@PathParam("id") String categoryId, Category category) {
-//        Gson gson = new GsonBuilder().create();
-//        category = gson.fromJson(gson.toJson(category), Category.class);
-//        category.setId(categoryId);
-//
-//        DBHelper dbHelper = new DBHelper();
-//        dbHelper.updateCategory(category);
-//
-//        return Response.status(Response.Status.OK).build();
-//    }
         @PUT
         @Path("/update/{id}")
         @Produces(MediaType.APPLICATION_JSON)

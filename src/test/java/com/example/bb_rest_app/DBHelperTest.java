@@ -2,8 +2,7 @@ package com.example.bb_rest_app;
 
 import org.junit.jupiter.api.Test;
 
-import static com.example.bb_rest_app.DBHelper.deleteCategory;
-import static com.example.bb_rest_app.DBHelper.validateAdmin;
+import static com.example.bb_rest_app.DBHelper.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.*;
@@ -139,4 +138,60 @@ class DBHelperTest {
             assertNotNull(brand.getName());
         }
     }
-}
+
+    @Test
+    public void testAddBrand() throws SQLException {
+
+            DBHelper dbHelper = new DBHelper();
+
+            // Add a new brand
+            dbHelper.addBrand("B004", "Zebronics");
+
+            // Verify that the Brand was added to the database
+            try (Connection conn = DBConnector.getConnection();
+                 Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT * FROM brand WHERE BrandID = 'C004'")) {
+                assertTrue(rs.next());
+                assertEquals("Zebronics", rs.getString("BrandName"));
+                assertFalse(rs.next());
+            }
+        }
+
+    @Test
+        public void testDeleteBrand() throws SQLException {
+            // create a mock Brand object with a known id
+            Brand brand = new Brand("1", "Test Brand");
+
+            // insert the mock Category into the database
+            String insertSql = "INSERT INTO brand (BrandID, BrandName) VALUES (?, ?)";
+            try (Connection conn = DBConnector.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(insertSql)) {
+                stmt.setString(1, brand.getId());
+                stmt.setString(2, brand.getName());
+                stmt.executeUpdate();
+            }
+
+            // delete the mock Brand from the database using the deleteBrand method
+            deleteBrand(brand);
+
+            // verify that the Brand has been deleted from the database
+            String selectSql = "SELECT * FROM brand WHERE BrandID = ?";
+            try (Connection conn = DBConnector.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(selectSql)) {
+                stmt.setString(1, brand.getId());
+                ResultSet rs = stmt.executeQuery();
+                assertFalse(rs.next()); // assert that there are no rows returned
+            }
+        }
+
+    @Test
+    void updateBrand() {
+            DBHelper dbHelper = new DBHelper();
+            Brand brandToUpdate = new Brand("B003", "Zebronics");
+            dbHelper.updateBrand(brandToUpdate);
+        }
+    }
+
+
+
+

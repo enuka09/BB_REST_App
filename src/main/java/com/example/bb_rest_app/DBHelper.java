@@ -31,7 +31,7 @@ public class DBHelper {
 
 //        Insert Category
 //        DBHelper dbHelper = new DBHelper();
-//        dbHelper.addCategory("C005", "Electronics");
+//        dbHelper.addBrand("C004", "Nexo");
 
 
 //        Delete category
@@ -44,9 +44,9 @@ public class DBHelper {
 //        }
 
         //Update Category
-//        DBHelper dbHelper = new DBHelper();
-//        Category categoryToUpdate = new Category("C005", "Food & Beverage");
-//        dbHelper.updateCategory(categoryToUpdate);
+        DBHelper dbHelper = new DBHelper();
+        Brand brand = new Brand("B003", "Nexo");
+        dbHelper.updateBrand(brand);
 
  }
 
@@ -260,6 +260,51 @@ public class DBHelper {
             stmt.close();
         }
         return brands;
+    }
+
+    //Insert Brands into the database
+    public void addBrand(String brandId, String brandName) {
+        String sql = "INSERT INTO brand (BrandID, BrandName) VALUES (?, ?)";
+
+        try (Connection conn = DBConnector.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, brandId);
+            pstmt.setString(2, brandName);
+            pstmt.executeUpdate();
+            System.out.println("Brand added Successfully!");
+        } catch (SQLException e) {
+            throw new IllegalStateException("Failed to Add Brand!", e);
+        }
+    }
+
+    //Delete Brand from the Database
+    public static void deleteBrand(Brand brand) throws SQLException {
+        String id = brand.getId();
+        String sql = "DELETE FROM brand WHERE BrandID = ?";
+        try (Connection conn = DBConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, id);
+            stmt.executeUpdate();
+        }
+    }
+
+
+    //Edit Brands in the Database
+    public void updateBrand(Brand brand) {
+        String updateQuery = "UPDATE brand SET BrandName=? WHERE BrandID=?";
+
+        try (Connection conn = DBConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(updateQuery)) {
+
+            stmt.setString(1, brand.getName());
+            stmt.setString(2, brand.getId());
+
+            int rowsAffected = stmt.executeUpdate();
+            System.out.println(rowsAffected + " row(s) updated.");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
 

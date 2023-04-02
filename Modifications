@@ -29,8 +29,10 @@ Id   |  Date        |  Remark
 017  |  02/04/2023  |  Add new method as "updateCategory" in DBHelper
 018  |  02/04/2023  |  Implement @PUT method in CategoryResource
 019  |  02/04/2023  |  Create new object as "Brand"
-020  |  01/04/2023  |  Add new methods as "getBrand" in DBHelper
-021  |  02/04/2023  |  Classes are tested successfully
+020  |  01/04/2023  |  Add new methods as "getBrand", "addBrand", "getCategory", "deleteBrand" and "updateBrand" in DBHelper
+021  |  02/04/2023  |  Implement @GET, @POST, @DELETE and @PUT methods in BrandResource
+021  |  02/04/2023  |  Al classes are tested successfully
+
 
 
 
