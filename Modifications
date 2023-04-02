@@ -25,3 +25,12 @@ Id   |  Date        |  Remark
 014  |  01/04/2023  |  Add new methods as "addCategory" , "getCategory" and "deleteCategory" in DBHelper
 015  |  01/04/2023  |  Create a new Resource as "CategoryResource" and implement @GET, @POST, @DELETE methods
 016  |  01/04/2023  |  Al classes are tested successfully
+
+017  |  02/04/2023  |  Add new method as "updateCategory" in DBHelper
+018  |  02/04/2023  |  Implement @PUT method in CategoryResource
+019  |  02/04/2023  |  Create new object as "Brand"
+020  |  01/04/2023  |  Add new methods as "getBrand" in DBHelper
+021  |  02/04/2023  |  Classes are tested successfully
+
+
+

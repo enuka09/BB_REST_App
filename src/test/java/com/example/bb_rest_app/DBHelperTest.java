@@ -118,4 +118,25 @@ class DBHelperTest {
             assertFalse(rs.next()); // assert that there are no rows returned
         }
     }
+
+    @Test
+    void updateCategory() {
+        DBHelper dbHelper = new DBHelper();
+        Category categoryToUpdate = new Category("C005", "Food & Beverage");
+        dbHelper.updateCategory(categoryToUpdate);
+
+    }
+
+    @Test
+    public void testGetBrand() throws SQLException {
+        List<Brand> brands = DBHelper.getBrand();
+
+        assertNotNull(brands);
+        assertTrue(brands.size() > 0);
+
+        for (Brand brand : brands) {
+            assertNotNull(brand.getId());
+            assertNotNull(brand.getName());
+        }
+    }
 }

@@ -29,11 +29,11 @@ public class CategoryResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response insertCategory(Category category){
+    public Response insertCategory(Category category) {
         Gson gson = new GsonBuilder().create();
         category = gson.fromJson(gson.toJson(category), Category.class);
         DBHelper dbHelper = new DBHelper();
-        dbHelper.addCategory(category.getId(),category.getName());
+        dbHelper.addCategory(category.getId(), category.getName());
         return Response.status(201).entity(category).build();
     }
 
@@ -52,16 +52,41 @@ public class CategoryResource {
     @DELETE
     @Path("/delete/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String deleteCategory(@PathParam("id") String id) {
+    public Response deleteCategory(@PathParam("id") String id) {
         Category category = new Category(id);
         try {
             DBHelper.deleteCategory(category);
-            return "Category with ID " + id + " has been deleted.";
+            return Response.status(204).build(); // 204 No Content indicates success
         } catch (SQLException e) {
-            return "Failed to delete category with ID " + id + ".";
+            return Response.status(500).entity("Failed to delete category with ID " + id + ".").build(); // 500 Internal Server Error indicates failure
         }
     }
 
-}
+//    @PUT
+//    @Path("/update/{id}")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response updateCategory(@PathParam("id") String categoryId, Category category) {
+//        Gson gson = new GsonBuilder().create();
+//        category = gson.fromJson(gson.toJson(category), Category.class);
+//        category.setId(categoryId);
+//
+//        DBHelper dbHelper = new DBHelper();
+//        dbHelper.updateCategory(category);
+//
+//        return Response.status(Response.Status.OK).build();
+//    }
+        @PUT
+        @Path("/update/{id}")
+        @Produces(MediaType.APPLICATION_JSON)
+        public Response updateCategory(@PathParam("id") String categoryId, Category category) {
+//            Gson gson = new GsonBuilder().create();
+//            category = gson.fromJson(gson.toJson(category), Category.class);
+            DBHelper dbHelper = new DBHelper();
+            category.setId(categoryId);
+            dbHelper.updateCategory(category);
+
+            return Response.status(Response.Status.OK).build();
+        }
+    }
 
 

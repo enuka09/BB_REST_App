@@ -10,7 +10,7 @@ public class DBHelper {
 
 //        View Category
 //        try {
-//            List<Category> categories = getCategory();
+//            List<Brand> brands = getBrand();
 //        } catch (SQLException e) {
 //        }
 
@@ -42,6 +42,11 @@ public class DBHelper {
 //        } catch (SQLException e) {
 //            System.out.println("Error deleting category: " + e.getMessage());
 //        }
+
+        //Update Category
+//        DBHelper dbHelper = new DBHelper();
+//        Category categoryToUpdate = new Category("C005", "Food & Beverage");
+//        dbHelper.updateCategory(categoryToUpdate);
 
  }
 
@@ -200,6 +205,7 @@ public class DBHelper {
     }
 
 
+    //Delete Category from the Database
     public static void deleteCategory(Category category) throws SQLException {
         String id = category.getId();
         String sql = "DELETE FROM category WHERE CategoryID = ?";
@@ -210,6 +216,51 @@ public class DBHelper {
         }
     }
 
+    //Edit Category in the Database
+    public void updateCategory(Category category) {
+        String updateQuery = "UPDATE category SET CategoryName=? WHERE CategoryID=?";
+
+        try (Connection conn = DBConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(updateQuery)) {
+
+            stmt.setString(1, category.getName());
+            stmt.setString(2, category.getId());
+
+            int rowsAffected = stmt.executeUpdate();
+            System.out.println(rowsAffected + " row(s) updated.");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    //View Brands from the Database
+    public static List<Brand> getBrand() throws SQLException {
+        List<Brand> brands = new ArrayList<>();
+        try (Connection conn = DBConnector.getConnection()) {
+
+            String sql = "SELECT * FROM brand";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String id = rs.getString("BrandID");
+                String name = rs.getString("BrandName");
+
+                Brand brand = new Brand(id, name);
+                brands.add(brand);
+
+                System.out.println("Brand ID: " + brand.getId());
+                System.out.println("Brand Name: " + brand.getName());
+                System.out.println("------------------------");
+            }
+            rs.close();
+            stmt.close();
+        }
+        return brands;
+    }
 }
 
 
