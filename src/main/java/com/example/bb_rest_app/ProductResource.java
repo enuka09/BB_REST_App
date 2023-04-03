@@ -7,17 +7,21 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.sql.SQLException;
+import java.text.ParseException;
 
-@Path("/brands")
-public class BrandResource {
+@Path("/products")
 
-    //View Brands
+public class ProductResource {
+
+    public static void main(String[] args) {
+    }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getBrand() {
+    public Response getProduct() {
         Gson gson = new GsonBuilder().create();
         try {
-            String json = gson.toJson(DBHelper.getBrand());
+            String json = gson.toJson(DBHelper.getProduct());
             return Response.ok(json, MediaType.APPLICATION_JSON).build();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -26,36 +30,35 @@ public class BrandResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response insertBrand(Brand brand) {
+    public Response insertProduct(Product product) {
         Gson gson = new GsonBuilder().create();
-        brand = gson.fromJson(gson.toJson(brand), Brand.class);
+        product = gson.fromJson(gson.toJson(product), Product.class);
         DBHelper dbHelper = new DBHelper();
-        dbHelper.addBrand(brand.getId(), brand.getName());
-        return Response.status(201).entity(brand).build();
+        dbHelper.addProduct(product);
+        return Response.status(201).entity(product).build();
+      //  return "success";
     }
-
 
     @DELETE
     @Path("/delete/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteBrand(@PathParam("id") String id) {
-        Brand brand = new Brand(id);
+    public Response deleteProduct(@PathParam("id") String id) {
+        Product product = new Product(id);
         try {
-            DBHelper.deleteBrand(brand);
+            DBHelper.deleteProduct(product);
             return Response.status(204).build(); // 204 No Content indicates success
         } catch (SQLException e) {
-            return Response.status(500).entity("Failed to delete Brand with ID " + id + ".").build(); // 500 Internal Server Error indicates failure
+            return Response.status(500).entity("Failed to delete Product with ID " + id + ".").build(); // 500 Internal Server Error indicates failure
         }
     }
 
     @PUT
     @Path("/update/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateBrand(@PathParam("id") String brandId, Brand brand) {
+    public Response updateProduct(@PathParam("id") String productId, Product product) {
         DBHelper dbHelper = new DBHelper();
-        brand.setId(brandId);
-        dbHelper.updateBrand(brand);
-
+        product.setId(productId);
+        dbHelper.updateProduct(product);
         return Response.status(Response.Status.OK).build();
     }
 }

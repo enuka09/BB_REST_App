@@ -35,20 +35,33 @@ public class DBHelper {
 
 
 //        Delete category
-//        Category categoryToDelete = new Category("C009");
+//        Product productToDelete = new Product("P001");
 //        try {
-//            DBHelper.deleteCategory(categoryToDelete);
+//            DBHelper.deleteProduct(productToDelete);
 //            System.out.println("Category deleted successfully");
 //        } catch (SQLException e) {
 //            System.out.println("Error deleting category: " + e.getMessage());
 //        }
 
-        //Update Category
-        DBHelper dbHelper = new DBHelper();
-        Brand brand = new Brand("B003", "Nexo");
-        dbHelper.updateBrand(brand);
+//       //Update Category
+//        DBHelper dbHelper = new DBHelper();
+//        Product product = new Product("P004", "test", 100, "test", "test", "test", 20);
+//        dbHelper.updateProduct(product);
 
- }
+
+        //ViewProducts
+//        try {
+//            List<Product> products = getProduct();
+//        } catch (SQLException e) {
+//            System.err.println("Error retrieving products: " + e.getMessage());
+//        }
+
+         //Add Products
+//            Product product = new Product("P002", "Logitech K120 Corded Keyboard", 9000.00, "This full-size keyboard with integrated number pad makes data entry, calculations and navigation a breeze.", "Computer Accessories", "Logitech", 5);
+//            DBHelper dbHelper = new DBHelper();
+//            dbHelper.addProduct(product);
+
+    }
 
    // View Customer Details from database
     public static List<Customer> getCustomers() throws SQLException {
@@ -306,6 +319,101 @@ public class DBHelper {
             e.printStackTrace();
         }
     }
+
+
+    public static List<Product> getProduct() throws SQLException {
+        List<Product> products = new ArrayList<>();
+        try (Connection conn = DBConnector.getConnection()) {
+
+            String sql = "SELECT * FROM product";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String id = rs.getString("ProductID");
+                String name = rs.getString("ProductName");
+                double price = rs.getDouble("ProductPrice");
+                String description = rs.getString("ProductDescription");
+                String category = rs.getString("ProductCategory");
+                String brand = rs.getString("ProductBrand");
+                int quantity = rs.getInt("ProductQuantity");
+
+                Product product = new Product(id, name, price, description, category, brand, quantity);
+                products.add(product);
+
+                System.out.println("Product ID: " + product.getId());
+                System.out.println("Product Name: " + product.getName());
+                System.out.println("Product Price: " + product.getPrice());
+                System.out.println("Product Description: " + product.getDescription());
+                System.out.println("Product Category: " + product.getCategory());
+                System.out.println("Product Brand: " + product.getBrand());
+                System.out.println("Product Quantity: " + product.getQuantity());
+                System.out.println("------------------------");
+            }
+            rs.close();
+            stmt.close();
+        }
+        return products;
+    }
+
+
+    //Insert Products into the database
+    public void addProduct(Product product) {
+        String sql = "INSERT INTO product (ProductID, ProductName, ProductPrice, ProductDescription, ProductCategory, ProductBrand, ProductQuantity) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = DBConnector.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, product.getId());
+            pstmt.setString(2, product.getName());
+            pstmt.setDouble(3, product.getPrice());
+            pstmt.setString(4, product.getDescription());
+            pstmt.setString(5, product.getCategory());
+            pstmt.setString(6, product.getBrand());
+            pstmt.setInt(7, product.getQuantity());
+            pstmt.executeUpdate();
+            System.out.println("Product added Successfully!");
+        } catch (SQLException e) {
+            throw new IllegalStateException("Failed to Add Product!", e);
+        }
+    }
+
+    //Delete Product from the Database
+    public static void deleteProduct(Product product) throws SQLException {
+        String id = product.getId();
+        String sql = "DELETE FROM product WHERE ProductID = ?";
+        try (Connection conn = DBConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, id);
+            stmt.executeUpdate();
+        }
+    }
+
+    //Edit Products in the Database
+    public void updateProduct(Product product) {
+        String updateQuery = "UPDATE product SET ProductName=?, ProductPrice=?, ProductDescription=?, " +
+                "ProductCategory=?, ProductBrand=?, ProductQuantity=? WHERE ProductID=?";
+
+        try (Connection conn = DBConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(updateQuery)) {
+
+            stmt.setString(1, product.getName());
+            stmt.setDouble(2, product.getPrice());
+            stmt.setString(3, product.getDescription());
+            stmt.setString(4, product.getCategory());
+            stmt.setString(5, product.getBrand());
+            stmt.setInt(6, product.getQuantity());
+            stmt.setString(7, product.getId());
+
+            int rowsAffected = stmt.executeUpdate();
+            System.out.println(rowsAffected + " row(s) updated.");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 
 

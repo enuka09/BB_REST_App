@@ -33,6 +33,12 @@ Id   |  Date        |  Remark
 021  |  02/04/2023  |  Implement @GET, @POST, @DELETE and @PUT methods in BrandResource
 021  |  02/04/2023  |  Al classes are tested successfully
 
+022  |  03/04/2023  |  Create new "product" class object
+022  |  03/04/2023  |  Add new methods as "getProduct", "addProduct", "deleteProduct" and "updateProduct" in DBHelper
+022  |  03/04/2023  |  Implement @GET, @POST, @DELETE and @PUT methods in ProductResource
+022  |  03/04/2023  |  Al classes are tested successfully
+
+
 
 
 
