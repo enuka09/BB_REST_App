@@ -9,10 +9,10 @@ public class DBHelper {
     public static void main(String[] args) throws SQLException {
 
 //        View Category
-//        try {
-//            List<Brand> brands = getBrand();
-//        } catch (SQLException e) {
-//        }
+        try {
+            List<Purchases> purchasesList = getPurchase();
+        } catch (SQLException e) {
+        }
 
           //Insert Customers
 //        DBHelper dbHelper =new DBHelper();
@@ -28,11 +28,6 @@ public class DBHelper {
 //       } else {
 //           System.out.println("Invalid username or password");
 //       }
-
-//        Insert Category
-//        DBHelper dbHelper = new DBHelper();
-//        dbHelper.addBrand("C004", "Nexo");
-
 
 //        Delete category
 //        Product productToDelete = new Product("P001");
@@ -61,9 +56,25 @@ public class DBHelper {
 //            DBHelper dbHelper = new DBHelper();
 //            dbHelper.addProduct(product);
 
+        DBHelper dbHelper = new DBHelper();
+
+        Purchases purchases = new Purchases();
+        purchases.setCus_username("johnsmith");
+        purchases.setProduct_id("ABC123");
+        purchases.setProduct_name("Widget");
+        purchases.setProduct_price(29.99);
+        purchases.setLoan_balance(15.0);
+        purchases.setInstallment_1(5.0);
+        purchases.setInstallment_2(5.0);
+        purchases.setInstallment_3(5.0);
+
+        // Call the addPurchase method with the Purchases object
+        dbHelper.addPurchase(purchases);
+
     }
 
-   // View Customer Details from database
+
+    // View Customer Details from database
     public static List<Customer> getCustomers() throws SQLException {
         List<Customer> customers = new ArrayList<>();
         try (Connection conn = DBConnector.getConnection()) {
@@ -101,7 +112,7 @@ public class DBHelper {
     }
 
 
-    // Insert Customers to the database
+//     Insert Customers to the database
     public static void insertUser(String firstName, String lastName, String username, String password, String nic, Date dob) throws SQLException {
         try (Connection conn = DBConnector.getConnection()) {
             String sql = "INSERT INTO customers (CusFirstName, CusLastName, CusUsername, CusPassword, CusNIC, CusDOB) " +
@@ -412,6 +423,69 @@ public class DBHelper {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+
+    //Add Customer Purchases in DB
+    public void addPurchase(Purchases purchases) {
+        String sql = "INSERT INTO purchase (CusUsername, ProductID, ProductName, ProductPrice, LoanBalance, Installment1, Installment2, Installment3) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = DBConnector.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, purchases.getCus_username());
+            pstmt.setString(2, purchases.getProduct_id());
+            pstmt.setString(3, purchases.getProduct_name());
+            pstmt.setDouble(4, purchases.getProduct_price());
+            pstmt.setDouble(5, purchases.getLoan_balance());
+            pstmt.setDouble(6, purchases.getInstallment_1());
+            pstmt.setDouble(7, purchases.getInstallment_2());
+            pstmt.setDouble(8, purchases.getInstallment_3());
+            pstmt.executeUpdate();
+            System.out.println("Customer Purchase added Successfully!");
+        } catch (SQLException e) {
+            throw new IllegalStateException("Failed to Add Customer Purchase!", e);
+        }
+    }
+
+    public static List<Purchases> getPurchase() throws SQLException {
+        List<Purchases> purchasesList = new ArrayList<>();
+        try (Connection conn = DBConnector.getConnection()) {
+
+            String sql = "SELECT * FROM purchase";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int purchase_id = rs.getInt("PurchaseID");
+                String cus_username = rs.getString("CusUsername");
+                String product_id = rs.getString("ProductID");
+                String product_name = rs.getString("ProductName");
+                double product_price = rs.getDouble("ProductPrice");
+                double loan_balance = rs.getDouble("LoanBalance");
+                double installment_1 = rs.getDouble("Installment1");
+                double installment_2 = rs.getDouble("Installment2");
+                double installment_3 = rs.getDouble("Installment3");
+
+                Purchases purchases = new Purchases(purchase_id, cus_username, product_id, product_name, product_price, loan_balance, installment_1, installment_2, installment_3);
+                purchasesList.add(purchases);
+
+                System.out.println("Purchase ID: " + purchases.getPurchase_id());
+                System.out.println("Customer Username: " + purchases.getCus_username());
+                System.out.println("Product ID: " + purchases.getProduct_id());
+                System.out.println("Product Name: " + purchases.getProduct_name());
+                System.out.println("Product Price: " + purchases.getProduct_price());
+                System.out.println("Loan Balance: " + purchases.getLoan_balance());
+                System.out.println("Installment 1: " + purchases.getInstallment_1());
+                System.out.println("Installment 2: " + purchases.getInstallment_2());
+                System.out.println("Installment 3: " + purchases.getInstallment_3());
+                System.out.println("------------------------");
+            }
+            rs.close();
+            stmt.close();
+        }
+        return purchasesList;
     }
 
 }

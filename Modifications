@@ -31,14 +31,16 @@ Id   |  Date        |  Remark
 019  |  02/04/2023  |  Create new object as "Brand"
 020  |  01/04/2023  |  Add new methods as "getBrand", "addBrand", "getCategory", "deleteBrand" and "updateBrand" in DBHelper
 021  |  02/04/2023  |  Implement @GET, @POST, @DELETE and @PUT methods in BrandResource
-021  |  02/04/2023  |  Al classes are tested successfully
+022  |  02/04/2023  |  Al classes are tested successfully
 
-022  |  03/04/2023  |  Create new "product" class object
-022  |  03/04/2023  |  Add new methods as "getProduct", "addProduct", "deleteProduct" and "updateProduct" in DBHelper
-022  |  03/04/2023  |  Implement @GET, @POST, @DELETE and @PUT methods in ProductResource
-022  |  03/04/2023  |  Al classes are tested successfully
+023  |  03/04/2023  |  Create new "product" class object
+024  |  03/04/2023  |  Add new methods as "getProduct", "addProduct", "deleteProduct" and "updateProduct" in DBHelper
+025  |  03/04/2023  |  Implement @GET, @POST, @DELETE and @PUT methods in ProductResource
+026  |  03/04/2023  |  Al classes are tested successfully
 
-
+027  |  04/04/2023  |  Add new methods as "getPurchase" and "addPurchase" in DBHelper
+028  |  04/04/2023  |  Add new methods as "getPurchase" and "addPurchase" in DBHelper
+029  |  04/04/2023  |  Create new Resource as "PurchaseResource" and implement @GET and @POST methods
 
 
 
