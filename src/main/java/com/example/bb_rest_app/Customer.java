@@ -10,8 +10,10 @@ public class Customer {
     private String password;
     private String nic;
     private Date dob;
+    private double loanAmount;
 
-    public Customer(int id, String firstName, String lastName, String username, String password, String nic, Date dob) {
+
+    public Customer(int id, String firstName, String lastName, String username, String password, String nic, Date dob, double loanAmount) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -19,6 +21,7 @@ public class Customer {
         this.password = password;
         this.nic = nic;
         this.dob = dob;
+        this.loanAmount = loanAmount;
     }
 
     public Customer(int id, String firstName, String lastName) {
@@ -84,9 +87,32 @@ public class Customer {
         return dob;
     }
 
-
     public void setDOB(Date dob) {
         this.dob = dob;
+    }
+
+    public String getNic() {
+        return nic;
+    }
+
+    public void setNic(String nic) {
+        this.nic = nic;
+    }
+
+    public Date getDob() {
+        return dob;
+    }
+
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
+
+    public double getLoanAmount() {
+        return loanAmount;
+    }
+
+    public void setLoanAmount(double loanAmount) {
+        this.loanAmount = loanAmount;
     }
 }
 

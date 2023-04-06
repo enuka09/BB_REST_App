@@ -7,72 +7,7 @@ import java.util.List;
 public class DBHelper {
 
     public static void main(String[] args) throws SQLException {
-
-//        View Category
-        try {
-            List<Purchases> purchasesList = getPurchase();
-        } catch (SQLException e) {
-        }
-
-          //Insert Customers
-//        DBHelper dbHelper =new DBHelper();
-//        dbHelper.getCustomers();
-//        insertUser("test", "test", "test", "test", "123456789", Date.valueOf("2002-09-06"));
-
-         // Login Method
-//       String username = "enuka@09";
-//       String password = "Enuka_@2002";
-//       DBHelper dbHelper = new DBHelper();
-//       if (dbHelper.validateAdmin(username, password)) {
-//           System.out.println("Login successful");
-//       } else {
-//           System.out.println("Invalid username or password");
-//       }
-
-//        Delete category
-//        Product productToDelete = new Product("P001");
-//        try {
-//            DBHelper.deleteProduct(productToDelete);
-//            System.out.println("Category deleted successfully");
-//        } catch (SQLException e) {
-//            System.out.println("Error deleting category: " + e.getMessage());
-//        }
-
-//       //Update Category
-//        DBHelper dbHelper = new DBHelper();
-//        Product product = new Product("P004", "test", 100, "test", "test", "test", 20);
-//        dbHelper.updateProduct(product);
-
-
-        //ViewProducts
-//        try {
-//            List<Product> products = getProduct();
-//        } catch (SQLException e) {
-//            System.err.println("Error retrieving products: " + e.getMessage());
-//        }
-
-         //Add Products
-//            Product product = new Product("P002", "Logitech K120 Corded Keyboard", 9000.00, "This full-size keyboard with integrated number pad makes data entry, calculations and navigation a breeze.", "Computer Accessories", "Logitech", 5);
-//            DBHelper dbHelper = new DBHelper();
-//            dbHelper.addProduct(product);
-
-        DBHelper dbHelper = new DBHelper();
-
-        Purchases purchases = new Purchases();
-        purchases.setCus_username("johnsmith");
-        purchases.setProduct_id("ABC123");
-        purchases.setProduct_name("Widget");
-        purchases.setProduct_price(29.99);
-        purchases.setLoan_balance(15.0);
-        purchases.setInstallment_1(5.0);
-        purchases.setInstallment_2(5.0);
-        purchases.setInstallment_3(5.0);
-
-        // Call the addPurchase method with the Purchases object
-        dbHelper.addPurchase(purchases);
-
     }
-
 
     // View Customer Details from database
     public static List<Customer> getCustomers() throws SQLException {
@@ -92,8 +27,9 @@ public class DBHelper {
                 String password = rs.getString("CusPassword");
                 String nic = rs.getString("CusNIC");
                 Date dob = rs.getDate("CusDOB");
+                double loanAmount = rs.getDouble("LoanAmount");
 
-                Customer customer = new Customer(id, firstName, lastName, username, password, nic, dob);
+                Customer customer = new Customer(id, firstName, lastName, username, password, nic, dob, loanAmount);
                 customers.add(customer);
 
                 System.out.println("Customer ID: " + customer.getId());
@@ -103,6 +39,7 @@ public class DBHelper {
                 System.out.println("Password: " + customer.getPassword());
                 System.out.println("NIC: " + customer.getNIC());
                 System.out.println("Date of Birth: " + customer.getDOB());
+                System.out.println("Loan Amount: " + customer.getLoanAmount());
                 System.out.println("------------------------");
             }
             rs.close();
@@ -112,11 +49,11 @@ public class DBHelper {
     }
 
 
-//     Insert Customers to the database
-    public static void insertUser(String firstName, String lastName, String username, String password, String nic, Date dob) throws SQLException {
+    //     Insert Customers to the database
+    public static void insertUser(String firstName, String lastName, String username, String password, String nic, Date dob, double loanAmount) throws SQLException {
         try (Connection conn = DBConnector.getConnection()) {
-            String sql = "INSERT INTO customers (CusFirstName, CusLastName, CusUsername, CusPassword, CusNIC, CusDOB) " +
-                    "VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO customers (CusFirstName, CusLastName, CusUsername, CusPassword, CusNIC, CusDOB, LoanAmount) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             try {
                 PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -126,6 +63,9 @@ public class DBHelper {
                 pstmt.setString(4, password);
                 pstmt.setString(5, nic);
                 pstmt.setDate(6, dob);
+                pstmt.setDouble(7, 15000);
+
+
                 pstmt.executeUpdate();
                 System.out.println("New user created successfully");
             } catch (SQLException e) {
@@ -180,25 +120,24 @@ public class DBHelper {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle the exception as appropriate for your application
             return false;
         }
     }
 
-        //Insert Categories into the database
-        public void addCategory(String categoryId, String categoryName) {
-            String sql = "INSERT INTO category (CategoryID, CategoryName) VALUES (?, ?)";
+    //Insert Categories into the database
+    public void addCategory(String categoryId, String categoryName) {
+        String sql = "INSERT INTO category (CategoryID, CategoryName) VALUES (?, ?)";
 
-            try (Connection conn = DBConnector.getConnection();
-                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, categoryId);
-                pstmt.setString(2, categoryName);
-                pstmt.executeUpdate();
-                System.out.println("Category added Successfully!");
-            } catch (SQLException e) {
-                throw new IllegalStateException("Failed to Add Category!", e);
-            }
+        try (Connection conn = DBConnector.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, categoryId);
+            pstmt.setString(2, categoryName);
+            pstmt.executeUpdate();
+            System.out.println("Category added Successfully!");
+        } catch (SQLException e) {
+            throw new IllegalStateException("Failed to Add Category!", e);
         }
+    }
 
 
     //View Category from database
@@ -426,8 +365,8 @@ public class DBHelper {
     }
 
 
-    //Add Customer Purchases in DB
-    public void addPurchase(Purchases purchases) {
+    //Record Customer Purchases in DB
+    public static void addPurchase(Purchases purchases) throws SQLException {
         String sql = "INSERT INTO purchase (CusUsername, ProductID, ProductName, ProductPrice, LoanBalance, Installment1, Installment2, Installment3) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -446,8 +385,52 @@ public class DBHelper {
         } catch (SQLException e) {
             throw new IllegalStateException("Failed to Add Customer Purchase!", e);
         }
+
+        List<Product> products = new ArrayList<>();
+        try (Connection conn = DBConnector.getConnection()) {
+
+            String sql1 = "SELECT ProductQuantity FROM product where ProductID ='" + purchases.getProduct_id() + "'";
+
+            PreparedStatement stmt = conn.prepareStatement(sql1);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int quantity = rs.getInt("ProductQuantity");
+
+                Product product = new Product(quantity);
+                products.add(product);
+                System.out.println(product);
+
+                Integer newProductQty = quantity - 1;
+                product.setQuantity(newProductQty);
+
+
+                String updateQuery = "UPDATE product SET  " +
+                        "ProductQuantity=? WHERE ProductID=?";
+
+                try (Connection connn = DBConnector.getConnection();
+                     PreparedStatement stmtt = connn.prepareStatement(updateQuery)) {
+
+
+                    stmtt.setInt(1, product.getQuantity());
+                    stmtt.setString(2, purchases.getProduct_id());
+
+
+//                    int rowsAffected = stmt.executeUpdate();
+                    int rowsAffected = stmtt.executeUpdate();
+                    System.out.println(rowsAffected + " row(s) updated.");
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
     }
 
+
+    //View all Purchase Details from the database
     public static List<Purchases> getPurchase() throws SQLException {
         List<Purchases> purchasesList = new ArrayList<>();
         try (Connection conn = DBConnector.getConnection()) {
@@ -488,6 +471,47 @@ public class DBHelper {
         return purchasesList;
     }
 
+
+    //    View Purchase Details of Relevant Customer Only
+    public static List<Purchases> getPurchasebyUsername(String cus_username) throws SQLException {
+        List<Purchases> purchasesList = new ArrayList<>();
+        try (Connection conn = DBConnector.getConnection()) {
+
+            String sql = "SELECT * FROM purchase WHERE CusUsername=?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, cus_username);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int purchase_id = rs.getInt("PurchaseID");
+                String product_id = rs.getString("ProductID");
+                String product_name = rs.getString("ProductName");
+                double product_price = rs.getDouble("ProductPrice");
+                double loan_balance = rs.getDouble("LoanBalance");
+                double installment_1 = rs.getDouble("Installment1");
+                double installment_2 = rs.getDouble("Installment2");
+                double installment_3 = rs.getDouble("Installment3");
+
+                Purchases purchases = new Purchases(purchase_id, cus_username, product_id, product_name, product_price, loan_balance, installment_1, installment_2, installment_3);
+                purchasesList.add(purchases);
+
+                System.out.println("Purchase ID: " + purchases.getPurchase_id());
+                System.out.println("Customer Username: " + purchases.getCus_username());
+                System.out.println("Product ID: " + purchases.getProduct_id());
+                System.out.println("Product Name: " + purchases.getProduct_name());
+                System.out.println("Product Price: " + purchases.getProduct_price());
+                System.out.println("Loan Balance: " + purchases.getLoan_balance());
+                System.out.println("Installment 1: " + purchases.getInstallment_1());
+                System.out.println("Installment 2: " + purchases.getInstallment_2());
+                System.out.println("Installment 3: " + purchases.getInstallment_3());
+                System.out.println("------------------------");
+            }
+            rs.close();
+            stmt.close();
+        }
+        return purchasesList;
+    }
 }
 
 

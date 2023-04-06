@@ -13,7 +13,7 @@ public class PurchaseResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addPurchase(Purchases purchases) {
+    public Response addPurchase(Purchases purchases) throws SQLException {
         Gson gson = new GsonBuilder().create();
         purchases = gson.fromJson(gson.toJson(purchases), Purchases.class);
         DBHelper dbHelper = new DBHelper();
@@ -34,3 +34,5 @@ public class PurchaseResource {
         }
     }
 }
+
+

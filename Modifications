@@ -39,8 +39,11 @@ Id   |  Date        |  Remark
 026  |  03/04/2023  |  Al classes are tested successfully
 
 027  |  04/04/2023  |  Add new methods as "getPurchase" and "addPurchase" in DBHelper
-028  |  04/04/2023  |  Add new methods as "getPurchase" and "addPurchase" in DBHelper
-029  |  04/04/2023  |  Create new Resource as "PurchaseResource" and implement @GET and @POST methods
+028  |  04/04/2023  |  Create new Resource as "PurchaseResource" and implement @GET and @POST methods
+
+029  |  05/04/2023  |  Create new method as "getPurchasebyUsername" in DBHelper
+030  |  05/04/2023  |  Create new Resource as "RelevantPurchaseResource" and implement @GET method
+
 
 
 

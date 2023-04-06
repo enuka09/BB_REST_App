@@ -4,65 +4,54 @@ import static org.junit.Assert.assertEquals;
 
 import java.sql.Date;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class CustomerTest {
 
-    @Test
-    public void testGettersAndSetters() {
-        int id = 1;
-        String firstName = "Enuka";
-        String lastName = "Pinsara";
-        String username = "enuka@gmail.com";
-        String password = "Enuka_@2002";
-        String nic = "1234567890";
-        Date dob = Date.valueOf("2002-09-06");
+private Customer customer;
 
-        Customer customer = new Customer(id, firstName, lastName, username, password, nic, dob);
+@Before
+public void setUp() {
+        customer = new Customer(1, "John", "Doe", "johndoe", "password", "123456789V", Date.valueOf("1980-01-01"), 5000);
+        }
 
-        assertEquals(id, customer.getId());
-        assertEquals(firstName, customer.getFirstName());
-        assertEquals(lastName, customer.getLastName());
-        assertEquals(username, customer.getUsername());
-        assertEquals(password, customer.getPassword());
-        assertEquals(nic, customer.getNIC());
-        assertEquals(dob, customer.getDOB());
+@Test
+public void testGetters() {
+        assertEquals(1, customer.getId());
+        assertEquals("John", customer.getFirstName());
+        assertEquals("Doe", customer.getLastName());
+        assertEquals("johndoe", customer.getUsername());
+        assertEquals("password", customer.getPassword());
+        assertEquals("123456789V", customer.getNIC());
+        assertEquals(Date.valueOf("1980-01-01"), customer.getDOB());
+        assertEquals(5000, customer.getLoanAmount(), 0.01);
+        }
 
-        int newId = 2;
-        String newFirstName = "Nimal";
-        String newLastName = "Perera";
-        String newUsername = "nimal@gmail.com";
-        String newPassword = "nimal@123";
-        String newNic = "9876543210";
-        Date newDob = Date.valueOf("1990-10-25");
+@Test
+public void testSetters() {
+        customer.setId(2);
+        assertEquals(2, customer.getId());
 
-        customer.setId(newId);
-        customer.setFirstName(newFirstName);
-        customer.setLastName(newLastName);
-        customer.setUsername(newUsername);
-        customer.setPassword(newPassword);
-        customer.setNIC(newNic);
-        customer.setDOB(newDob);
+        customer.setFirstName("Jane");
+        assertEquals("Jane", customer.getFirstName());
 
-        assertEquals(newId, customer.getId());
-        assertEquals(newFirstName, customer.getFirstName());
-        assertEquals(newLastName, customer.getLastName());
-        assertEquals(newUsername, customer.getUsername());
-        assertEquals(newPassword, customer.getPassword());
-        assertEquals(newNic, customer.getNIC());
-        assertEquals(newDob, customer.getDOB());
-    }
+        customer.setLastName("Doe");
+        assertEquals("Doe", customer.getLastName());
 
-    @Test
-    public void testConstructor() {
-        int id = 1;
-        String firstName = "Enuka";
-        String lastName = "Pinsara";
+        customer.setUsername("janedoe");
+        assertEquals("janedoe", customer.getUsername());
 
-        Customer customer = new Customer(id, firstName, lastName);
+        customer.setPassword("newpassword");
+        assertEquals("newpassword", customer.getPassword());
 
-        assertEquals(id, customer.getId());
-        assertEquals(firstName, customer.getFirstName());
-        assertEquals(lastName, customer.getLastName());
-    }
-}
+        customer.setNIC("987654321V");
+        assertEquals("987654321V", customer.getNIC());
+
+        customer.setDOB(Date.valueOf("1990-01-01"));
+        assertEquals(Date.valueOf("1990-01-01"), customer.getDOB());
+
+        customer.setLoanAmount(10000);
+        assertEquals(10000, customer.getLoanAmount(), 0.01);
+        }
+        }

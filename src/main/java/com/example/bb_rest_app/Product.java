@@ -1,7 +1,7 @@
 package com.example.bb_rest_app;
 
 public class Product {
-    private String  id;
+    private String id;
     private String name;
     private double price;
     private String description;
@@ -25,6 +25,10 @@ public class Product {
 
     public Product() {
 
+    }
+
+    public Product(int quantity) {
+        this.quantity = quantity;
     }
 
 

@@ -13,30 +13,7 @@ import java.text.ParseException;
 public class AdminLoginResource {
 
     public static void main(String[] args) throws ParseException {
-//        AdminLoginResource adminLoginResource = new AdminLoginResource();
-//        Admin newAdmin = new Admin();
-//
-//        newAdmin.setUsername("enuka@09");
-//        newAdmin.setPassword("Enuka_@2002");
-//
-//        String response = adminLoginResource.adminlogin(newAdmin.getUsername(), newAdmin.getPassword());
-//        System.out.println(response);
     }
-
-
-//    @POST
-//    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-//    @Produces(MediaType.TEXT_PLAIN)
-//    public String adminlogin(@FormParam("username") String username, @FormParam("password") String password) {
-//        boolean isValidAdmin = DBHelper.validateAdmin(username, password);
-//
-//        if (isValidAdmin) {
-//            return "Login successful";
-//        } else {
-//            return "Invalid username or password";
-//        }
-//    }
-
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

@@ -10,7 +10,6 @@ public class Brand {
     }
 
     public Brand() {
-
     }
 
     public Brand(String id) {

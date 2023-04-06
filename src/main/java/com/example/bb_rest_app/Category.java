@@ -10,7 +10,6 @@ public class Category {
     }
 
     public Category() {
-
     }
 
     public Category(String id) {

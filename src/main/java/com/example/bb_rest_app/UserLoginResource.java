@@ -12,34 +12,9 @@ import java.text.ParseException;
 public class UserLoginResource {
 
     public static void main(String[] args) throws ParseException {
-//        UserLoginResource userLoginResource = new UserLoginResource();
-//        Customer newCustomer = new Customer();
-//
-//        newCustomer.setUsername("kamal@");
-//        newCustomer.setPassword("Kamal123");
-//
-//        String response = userLoginResource.login(newCustomer.getUsername(), newCustomer.getPassword());
-//        System.out.println(response);
     }
 
-
-//    @POST
-////    @Path("/login")
-//    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-//    @Produces(MediaType.TEXT_PLAIN)
-//    public String login(@FormParam("username") String username, @FormParam("password") String password) {
-//        boolean isValidUser = DBHelper.validateUser(username, password);
-//
-//        if (isValidUser) {
-//            return "Login successful";
-//        } else {
-//            return "Invalid username or password";
-//        }
-//    }
-
-
     @POST
-//    @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(Customer customer) {

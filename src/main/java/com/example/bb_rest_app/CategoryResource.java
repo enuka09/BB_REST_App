@@ -15,16 +15,6 @@ import java.text.ParseException;
 public class CategoryResource {
 
     public static void main(String[] args) throws ParseException {
-
-//      Insert Category
-//        CategoryResource categoryResource = new CategoryResource();
-//        Category newCategory = new Category();
-//
-//        newCategory.setId("C002");
-//        newCategory.setName("Computer Accessories");
-//
-//        String response = categoryResource.insertCategory(newCategory);
-//        System.out.println(response);
     }
 
     @POST
@@ -62,18 +52,16 @@ public class CategoryResource {
         }
     }
 
-        @PUT
-        @Path("/update/{id}")
-        @Produces(MediaType.APPLICATION_JSON)
-        public Response updateCategory(@PathParam("id") String categoryId, Category category) {
-//            Gson gson = new GsonBuilder().create();
-//            category = gson.fromJson(gson.toJson(category), Category.class);
-            DBHelper dbHelper = new DBHelper();
-            category.setId(categoryId);
-            dbHelper.updateCategory(category);
+    @PUT
+    @Path("/update/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateCategory(@PathParam("id") String categoryId, Category category) {
+        DBHelper dbHelper = new DBHelper();
+        category.setId(categoryId);
+        dbHelper.updateCategory(category);
 
-            return Response.status(Response.Status.OK).build();
-        }
+        return Response.status(Response.Status.OK).build();
     }
+}
 
 

@@ -24,14 +24,16 @@ class DBHelperTest {
             assertNotNull(customer.getPassword());
             assertNotNull(customer.getNIC());
             assertNotNull(customer.getDOB());
-        }
+            assertNotNull(customer.getLoanAmount());
 
+        }
     }
 
     @Test
     void insertUser() {
         try {
-            DBHelper.insertUser("test", "test", "test@", "test321", "98543210", Date.valueOf("2000-05-11"));
+            DBHelper.insertUser("test", "test", "test@", "test321",
+                    "98543210", Date.valueOf("2000-05-11"), 15000 );
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -66,14 +68,14 @@ class DBHelperTest {
         DBHelper dbHelper = new DBHelper();
 
         // Add a new category
-        dbHelper.addCategory("C007", "Food");
+        dbHelper.addCategory("C019", "testing");
 
         // Verify that the category was added to the database
         try (Connection conn = DBConnector.getConnection();
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM category WHERE CategoryID = 'C007'")) {
+             ResultSet rs = stmt.executeQuery("SELECT * FROM category WHERE CategoryID = 'C019'")) {
             assertTrue(rs.next());
-            assertEquals("Food", rs.getString("CategoryName"));
+            assertEquals("testing", rs.getString("CategoryName"));
             assertFalse(rs.next());
         }
     }
@@ -145,12 +147,12 @@ class DBHelperTest {
         DBHelper dbHelper = new DBHelper();
 
         // Add a new brand
-        dbHelper.addBrand("B004", "Zebronics");
+        dbHelper.addBrand("B009", "Zebronics");
 
         // Verify that the Brand was added to the database
         try (Connection conn = DBConnector.getConnection();
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM brand WHERE BrandID = 'C004'")) {
+             ResultSet rs = stmt.executeQuery("SELECT * FROM brand WHERE BrandID = 'B009'")) {
             assertTrue(rs.next());
             assertEquals("Zebronics", rs.getString("BrandName"));
             assertFalse(rs.next());
@@ -206,7 +208,8 @@ class DBHelperTest {
 
     @Test
     void addProduct() {
-        Product product = new Product("P003", "Lumala Skool BMX 12", 14999.00, "Made in Sri Lanka, with the frame, fork and rim made in our factory. We use DSI tires & tubes exclusively on all our bikes", "Kids Items", "Lumala", 15);
+        Product product = new Product("P008", "Lumala Skool BMX 12", 14999.00,
+                "Made in Sri Lanka, with the frame, fork on all our bikes", "Kids Items", "Lumala", 15);
         DBHelper dbHelper = new DBHelper();
         dbHelper.addProduct(product);
     }
@@ -214,7 +217,7 @@ class DBHelperTest {
     @Test
     void deleteProduct() {
 
-        Product productToDelete = new Product("testid");
+        Product productToDelete = new Product("P008");
         try {
             DBHelper.deleteProduct(productToDelete);
             System.out.println("Product deleted successfully");
@@ -225,6 +228,14 @@ class DBHelperTest {
 
     @Test
     void updateProduct() {
+        DBHelper dbHelper = new DBHelper();
+        Product product = new Product("P004", "test", 100, "test", "test", "test", 20);
+        dbHelper.updateProduct(product);
+    }
+
+
+    @Test
+    void updating() {
         DBHelper dbHelper = new DBHelper();
         Product product = new Product("P004", "test", 100, "test", "test", "test", 20);
         dbHelper.updateProduct(product);

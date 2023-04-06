@@ -20,28 +20,6 @@ import java.util.List;
 public class CustomerResource {
 
     public static void main(String[] args) throws ParseException {
-
-//        CustomerResource customerResource = new CustomerResource();
-//        String customersJson = customerResource.getCustomers();
-//        System.out.println(customersJson);
-
-        /* Insert Customer */
-//        CustomerResource customerResource = new CustomerResource();
-//        Customer newCustomer = new Customer();
-//
-//        newCustomer.setFirstName("Namal");
-//        newCustomer.setLastName("Perera");
-//        newCustomer.setUsername("namal@gmail.com");
-//        newCustomer.setPassword("Namal_@1990");
-//        newCustomer.setNIC("19901830040");
-//
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        java.util.Date utilDate = dateFormat.parse("1990-10-21");
-//        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-//        newCustomer.setDOB(sqlDate);
-//
-//        String response = customerResource.createCustomer(newCustomer);
-//        System.out.println(response);
     }
 
     @POST
@@ -51,17 +29,15 @@ public class CustomerResource {
         customer = gson.fromJson(gson.toJson(customer), Customer.class);
         try {
             DBHelper.insertUser(customer.getFirstName(), customer.getLastName(), customer.getUsername(),
-                    customer.getPassword(), customer.getNIC(), customer.getDOB());
+                    customer.getPassword(), customer.getNIC(), customer.getDOB(), customer.getLoanAmount());
             String message = "Customer created successfully";
             Response.ResponseBuilder builder = Response.status(Response.Status.CREATED);
             builder.entity(message);
             Response response = builder.build();
             return response;
-           // return "inserted";
         } catch (SQLException e) {
             String errorMessage = "Error creating customer: " + e.getMessage();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorMessage).build();
-//            return "error";
         }
     }
 
